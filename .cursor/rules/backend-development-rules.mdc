@@ -1,0 +1,467 @@
+---
+alwaysApply: true
+---
+
+# Apsorc File Rules for My Backend
+
+This document defines the rules for creating and updating `.apsorc` files in this Apso CLI generated backend project. These rules help Cursor understand how to properly structure the apsorc file to generate the correct backend code.
+
+## 1. File Structure Requirements
+
+### File Location:
+
+- **Path**: `.apsorc` (project root)
+- **Format**: JSON
+- **Version**: **MUST BE 2** (strict requirement)
+
+### Required Base Structure:
+
+```json
+{
+  "version": 2,
+  "rootFolder": "src",
+  "apiType": "rest",
+  "entities": [...],
+  "relationships": [...]
+}
+```
+
+## 2. Entity Definition Rules
+
+### Entity Structure:
+
+```json
+{
+  "name": "EntityName",
+  "created_at": true,
+  "updated_at": true,
+  "fields": [...],
+  "indexes": [...],
+  "uniques": [...]
+}
+```
+
+### Required Entity Properties:
+
+- **name**: PascalCase, singular form (e.g., "User", "BlogPost")
+- **created_at**: Always `true`
+- **updated_at**: Always `true`
+- **fields**: Array of field definitions
+
+## 3. Field Definition Rules
+
+### Field Structure:
+
+```json
+{
+  "name": "fieldName",
+  "type": "fieldType",
+  "nullable": false,
+  "unique": false,
+  "index": false,
+  "length": null,
+  "default": null,
+  "values": null,
+  "is_email": false
+}
+```
+
+### Required Field Properties:
+
+- **name**: camelCase field name
+- **type**: One of the supported field types
+
+### Optional Field Properties:
+
+- **nullable**: Allow null values (default: false)
+- **unique**: Unique constraint (default: false)
+- **index**: Database index (default: false)
+- **length**: For varchar/char fields
+- **default**: Default value
+- **values**: For enum fields (array of strings)
+- **is_email**: Email validation (default: false)
+
+## 4. Supported Field Types
+
+### Text Types:
+
+- `text` - Long text, no length limit
+- `varchar` - Short text with length limit
+- `char` - Fixed-length text
+
+### Numeric Types:
+
+- `integer` - Whole numbers
+- `float` - Decimal numbers
+- `decimal` - Precise decimals
+- `bigint` - Large integers
+
+### Boolean Types:
+
+- `boolean` - True/false values
+
+### Date/Time Types:
+
+- `date` - Date only
+- `timestamp` - Date and time
+- `timestamptz` - Timezone-aware timestamp
+
+### Special Types:
+
+- `enum` - Predefined values
+- `json` - Structured data (JSONB)
+- `json-plain` - Simple JSON
+- `uuid` - Unique identifiers
+
+## 5. Relationship Definition Rules (Version 2)
+
+### Relationship Structure:
+
+```json
+{
+  "from": "EntityName",
+  "to": "RelatedEntity",
+  "type": "RelationshipType",
+  "nullable": false,
+  "index": false,
+  "to_name": null,
+  "cascadeDelete": false
+}
+```
+
+### Required Relationship Properties:
+
+- **from**: Source entity name
+- **to**: Target entity name
+- **type**: Relationship type
+
+### Optional Relationship Properties:
+
+- **nullable**: Allow null foreign key (default: false)
+- **index**: Add database index (default: false)
+- **to_name**: Custom relationship name (default: entity name)
+- **cascadeDelete**: Cascade delete on parent deletion (default: false)
+
+### Supported Relationship Types:
+
+- `OneToMany` - One entity has many related entities
+- `ManyToOne` - Many entities belong to one entity
+- `ManyToMany` - Many-to-many relationship
+- `OneToOne` - One-to-one relationship
+
+## 6. Common Entity Patterns
+
+### User Entity Pattern:
+
+```json
+{
+  "name": "User",
+  "created_at": true,
+  "updated_at": true,
+  "fields": [
+    {
+      "name": "username",
+      "type": "text",
+      "unique": true,
+      "length": 50
+    },
+    {
+      "name": "email",
+      "type": "text",
+      "is_email": true,
+      "unique": true,
+      "length": 255
+    },
+    {
+      "name": "fullName",
+      "type": "text",
+      "length": 100,
+      "nullable": true
+    },
+    {
+      "name": "isActive",
+      "type": "boolean",
+      "default": true
+    }
+  ]
+}
+```
+
+### Post Entity Pattern:
+
+```json
+{
+  "name": "Post",
+  "created_at": true,
+  "updated_at": true,
+  "fields": [
+    {
+      "name": "title",
+      "type": "text",
+      "length": 200
+    },
+    {
+      "name": "content",
+      "type": "text"
+    },
+    {
+      "name": "status",
+      "type": "enum",
+      "values": ["Draft", "Published", "Archived"],
+      "default": "Draft"
+    },
+    {
+      "name": "viewCount",
+      "type": "integer",
+      "default": 0
+    }
+  ]
+}
+```
+
+## 7. Common Relationship Patterns
+
+### One-to-Many (User -> Posts):
+
+```json
+{
+  "from": "User",
+  "to": "Post",
+  "type": "OneToMany"
+}
+```
+
+### Many-to-One (Post -> User):
+
+```json
+{
+  "from": "Post",
+  "to": "User",
+  "type": "ManyToOne",
+  "index": true
+}
+```
+
+### Many-to-One with Custom Name (Post -> User as Author):
+
+```json
+{
+  "from": "Post",
+  "to": "User",
+  "type": "ManyToOne",
+  "to_name": "author",
+  "index": true
+}
+```
+
+## 8. Field Type Guidelines
+
+### Text Fields:
+
+- **Short text**: Use `varchar` with `length`
+- **Long text**: Use `text` (no length limit)
+- **Fixed length**: Use `char` with `length`
+- **Email**: Use `text` with `is_email: true`
+
+### Numeric Fields:
+
+- **Counts/IDs**: Use `integer`
+- **Prices/Amounts**: Use `decimal`
+- **Ratings/Scores**: Use `float`
+- **Large numbers**: Use `bigint`
+
+### Status Fields:
+
+- **Always use enum**: Define `values` array
+- **Set default**: Use `default` property
+- **Common values**: ["Active", "Inactive"], ["Draft", "Published"]
+
+### Date Fields:
+
+- **Creation/Update**: Use `timestamp` (auto-generated)
+- **Due dates**: Use `date` or `timestamp`
+- **Timezone-aware**: Use `timestamptz`
+
+## 9. Validation Rules
+
+### Email Fields:
+
+```json
+{
+  "name": "email",
+  "type": "text",
+  "is_email": true,
+  "unique": true,
+  "length": 255
+}
+```
+
+### Required Fields:
+
+```json
+{
+  "name": "title",
+  "type": "text",
+  "nullable": false
+}
+```
+
+### Enum Fields:
+
+```json
+{
+  "name": "status",
+  "type": "enum",
+  "values": ["Draft", "Published", "Archived"],
+  "default": "Draft"
+}
+```
+
+### Unique Fields:
+
+```json
+{
+  "name": "username",
+  "type": "text",
+  "unique": true,
+  "length": 50
+}
+```
+
+## 10. Workflow Commands
+
+### ⚠️ **CRITICAL: CODE GENERATION AND MIGRATION ARE MANDATORY**
+
+**Every time you update the `.apsorc` file, you MUST run `apso server scaffold` to generate the backend code, then generate migrations to keep the database schema in sync.**
+
+### Complete Workflow After .apsorc Changes:
+
+1. **🚨 GENERATE CODE (MANDATORY)**:
+
+```bash
+apso server scaffold
+```
+
+2. **🚨 GENERATE MIGRATION (MANDATORY)**:
+
+```bash
+npm run db:generate
+```
+
+3. **Review Generated Migration**:
+
+```bash
+# Check the generated migration file in src/migrations/
+ls -la src/migrations/
+```
+
+4. **Run Database Migrations**:
+
+```bash
+npm run db:migrate
+```
+
+5. **Start Database** (if not running):
+
+```bash
+npm run compose
+```
+
+6. **Start Server**:
+
+```bash
+npm run start:dev
+```
+
+### 🔄 **Automated Migration Workflow Script**
+
+Create a script to automate the process:
+
+```bash
+#!/bin/bash
+# save as scripts/update-schema.sh
+
+echo "🔄 Starting schema update workflow..."
+
+# 1. Generate code (MANDATORY)
+echo "📝 Generating backend code..."
+apso server scaffold
+
+# 2. Generate migration (CRITICAL)
+echo "🚨 Generating database migration..."
+npm run db:generate
+
+# 3. Show generated migration
+echo "📋 Generated migration files:"
+ls -la src/migrations/ | tail -5
+
+# 4. Run migrations
+echo "🗄️ Running database migrations..."
+npm run db:migrate
+
+echo "✅ Schema update complete!"
+```
+
+Make it executable:
+```bash
+chmod +x scripts/update-schema.sh
+```
+
+### Database Commands Reference:
+
+- **Generate Migration** (CRITICAL):
+```bash
+npm run db:generate
+```
+
+- **Run Migrations**:
+```bash
+npm run db:migrate
+```
+
+- **Rollback Last Migration**:
+```bash
+npm run db:rollback
+```
+
+- **Sync Schema** (development only):
+```bash
+npm run schema:sync
+```
+
+- **Check Migration Status**:
+```bash
+npm run db:status
+```
+
+### 🚨 **Migration Best Practices**
+
+1. **Always run `apso server scaffold`** after `.apsorc` changes
+2. **Always generate migrations** after code generation
+3. **Review generated migrations** before running them
+4. **Test migrations** in development first
+5. **Backup database** before running migrations in production
+6. **Use descriptive migration names** when possible
+
+## 11. Common Prompts and Responses
+
+### Prompt: "Create a User entity with username, email, and fullName"
+
+**Response**: Add User entity with text fields, email validation, and appropriate lengths
+
+### Prompt: "Create a Post entity that belongs to a User"
+
+**Response**: Add Post entity with title/content fields and ManyToOne relationship to User
+
+### Prompt: "Add status field to Post entity"
+
+**Response**: Add enum field with Draft/Published/Archived values
+
+### Prompt: "Create Category entity and relate it to Posts"
+
+**Response**: Add Category entity and create OneToMany/ManyToOne relationships
+
+---
+
+<!--
+**Remember**: Always use version 2, define relationships separately, run `apso server scaffold` after changes, then generate and run migrations! -->

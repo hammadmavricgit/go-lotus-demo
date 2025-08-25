@@ -1,0 +1,406 @@
+{
+  "version": 2,
+  "rootFolder": "src",
+  "relationships": [
+    {
+      "from": "User",
+      "to": "Note",
+      "type": "OneToMany",
+      "nullable": true
+    },
+    {
+      "from": "Client",
+      "to": "User",
+      "type": "ManyToMany",
+      "to_name": "associatedStaff",
+      "bi_directional": true
+    },
+    {
+      "from": "User",
+      "to": "staffHour",
+      "type": "OneToOne",
+      "nullable": true
+    },
+    {
+      "from": "User",
+      "to": "ClinicInformation",
+      "type": "OneToOne",
+      "nullable": true
+    },
+    {
+      "from": "User",
+      "to": "EmergencyContact",
+      "type": "OneToMany",
+      "nullable": true
+    },
+    {
+      "from": "User",
+      "to": "SpecialCondition",
+      "type": "ManyToMany",
+      "nullable": true
+    },
+    {
+      "from": "User",
+      "to": "Credential",
+      "type": "OneToMany",
+      "nullable": true
+    }
+  ],
+  "entities": [
+    {
+      "name": "User",
+      "tableName": "users",
+      "created_at": true,
+      "updated_at": true,
+      "fields": [
+        {
+          "name": "email",
+          "type": "text",
+          "is_email": true,
+          "unique": true,
+          "nullable": false
+        },
+        {
+          "name": "firstName",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "lastName",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "clerkId",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "type": "enum",
+          "values": [
+            "Active",
+            "Inactive",
+            "Delete"
+          ],
+          "default": "Active"
+        },
+        {
+          "name": "role",
+          "type": "enum",
+          "values": [
+            "admin",
+            "staff"
+          ],
+          "default": "staff"
+        },
+        {
+          "name": "primary_phone",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "signature",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "title",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "bio",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "address1",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "address2",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "city",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "state",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "zip_code",
+          "type": "integer",
+          "default": 0,
+          "nullable": true
+        },
+        {
+          "name": "date_of_birth",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "gender",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "work_phone",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "home_phone",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "social_security_number",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "image_url",
+          "type": "text",
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "Note",
+      "created_at": true,
+      "updated_at": true,
+      "fields": [
+        {
+          "name": "issue_date",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "label",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "note",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "file_url",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "attachments",
+          "type": "json",
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "staffHour",
+      "created_at": true,
+      "updated_at": true,
+      "fields": [
+        {
+          "name": "expectedHours",
+          "type": "integer",
+          "nullable": true
+        },
+        {
+          "name": "maxHours",
+          "type": "integer",
+          "nullable": true
+        },
+        {
+          "name": "maxOvertimeHours",
+          "type": "integer",
+          "nullable": true
+        },
+        {
+          "name": "supervisedHours",
+          "type": "integer",
+          "nullable": true
+        },
+        {
+          "name": "vacationTimeAlloted",
+          "type": "integer",
+          "nullable": true
+        },
+        {
+          "name": "sickTimeAlloted",
+          "type": "integer",
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "ClinicInformation",
+      "created_at": true,
+      "updated_at": true,
+      "fields": [
+        {
+          "name": "title",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "employeeNumber",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "npiNumber",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "department",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "supervisor",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "dateHired",
+          "type": "date",
+          "nullable": true
+        },
+        {
+          "name": "dateTerminated",
+          "type": "date",
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "SpecialCondition",
+      "created_at": true,
+      "updated_at": true,
+      "fields": [
+        {
+          "name": "condition",
+          "type": "text",
+          "nullable": false
+        }
+      ]
+    },
+    {
+      "name": "Credential",
+      "created_at": true,
+      "updated_at": true,
+      "fields": [
+        {
+          "name": "credentialName",
+          "type": "enum",
+          "values": [
+            "CPR_TRAINING",
+            "MEDICAL_TRAINING",
+            "PHYSIOTHERAPY"
+          ],
+          "nullable": false
+        },
+        {
+          "name": "issueDate",
+          "type": "date",
+          "nullable": true
+        },
+        {
+          "name": "expireDate",
+          "type": "date",
+          "nullable": true
+        },
+        {
+          "name": "note",
+          "type": "text",
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "EmergencyContact",
+      "created_at": true,
+      "updated_at": true,
+      "fields": [
+        {
+          "name": "name",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "relationship",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "phone",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "email",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "address",
+          "type": "text",
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "Client",
+      "created_at": true,
+      "updated_at": true,
+      "fields": [
+        {
+          "name": "firstName",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "lastName",
+          "type": "text",
+          "nullable": false
+        },
+        {
+          "name": "dateOfBirth",
+          "type": "date",
+          "nullable": true
+        },
+        {
+          "name": "parentEmail",
+          "type": "text",
+          "is_email": true,
+          "nullable": true
+        },
+        {
+          "name": "thingsToLookOutFor",
+          "type": "text",
+          "nullable": true
+        },
+        {
+          "name": "status",
+          "type": "enum",
+          "values": [
+            "Current",
+            "Waitlisted",
+            "Archived"
+          ],
+          "default": "Current"
+        }
+      ]
+    }
+  ]
+}

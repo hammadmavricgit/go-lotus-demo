@@ -1,0 +1,31 @@
+{
+  "name": "go-lotus",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Full-stack AI prompt testing application",
+  "scripts": {
+    "install:all": "npm run install:web && npm run install:backend",
+    "install:web": "cd web && npm install",
+    "install:backend": "cd backend && npm install",
+    "dev": "npx concurrently \"npm run dev:web\" \"npm run dev:backend\"",
+    "dev:web": "cd web && npm run dev",
+    "dev:backend": "cd backend && npm run start:dev",
+    "build": "npm run build:web && npm run build:backend",
+    "build:web": "cd web && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "start": "npx concurrently \"npm run start:web\" \"npm run start:backend\"",
+    "start:web": "cd web && npm run start",
+    "start:backend": "cd backend && npm run start:prod",
+    "lint": "npm run lint:web && npm run lint:backend",
+    "lint:web": "cd web && npm run lint",
+    "lint:backend": "cd backend && npm run lint",
+    "test": "npm run test:backend",
+    "test:backend": "cd backend && npm run test",
+    "clean": "npm run clean:web && npm run clean:backend",
+    "clean:web": "cd web && rm -rf .next out",
+    "clean:backend": "cd backend && rm -rf dist"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+} 

@@ -1,0 +1,672 @@
+---
+alwaysApply: true
+---
+
+# Go-Lotus-AI Design System
+
+This document defines the **VISUAL DESIGN SYSTEM** for the Go-Lotus-AI web application. These rules ensure UI/UX consistency, proper theming, and visual harmony across the entire application.
+
+## 🎨 Design System Principles
+
+- **🚨 ZERO TOLERANCE**: NO hardcoded colors, spacing, typography, or strings
+- **🎯 Visual Consistency**: All visual elements follow defined design tokens
+- **♿ Accessibility**: Proper contrast ratios, touch targets, and semantic labels
+- **📱 Responsive Design**: Adaptable layouts for different screen sizes
+- **🌓 Theme Support**: Seamless light and dark mode implementation
+- **🔧 Component-First**: Use existing UI components from `@/components/ui/`
+
+---
+
+## 1. Color Palette
+
+### 🚨 MANDATORY COLOR SYSTEM 🚨
+
+**Use ONLY theme colors. NO hardcoded color values allowed anywhere in the application.**
+
+### Primary Brand Colors
+
+| Name          | Hex       | Usage                   |
+| ------------- | --------- | ----------------------- |
+| Primary Coral | `#FC5858` | **Primary brand color** |
+| White         | `#FFFFFF` | Primary backgrounds     |
+| Secondary BG  | `#F4EDE2` | Secondary backgrounds   |
+
+### Content Colors
+
+| Name              | Hex       | Usage                  |
+| ----------------- | --------- | ---------------------- |
+| Content Primary   | `#000000` | Primary text, headings |
+| Content Secondary | `#545454` | Secondary text, labels |
+| Black             | `#11151B` | Strong headings        |
+| Dark Gray         | `#343A40` | Muted text             |
+| Light Gray        | `#6C757D` | Placeholder text       |
+
+### System Colors
+
+| Name         | Hex       | Usage                         |
+| ------------ | --------- | ----------------------------- |
+| Success      | `#28A745` | Success states, confirmations |
+| Warning      | `#FFC107` | Warning states, alerts        |
+| Error        | `#DC3545` | Error states, deletions       |
+| Tertiary Sun | `#FCA311` | Accent color, highlights      |
+
+### Background Colors
+
+| Name               | Hex       | Usage                 |
+| ------------------ | --------- | --------------------- |
+| Background Primary | `#FFFFFF` | Primary backgrounds   |
+| Secondary BG       | `#F4EDE2` | Secondary backgrounds |
+
+### Border Colors
+
+| Name               | Hex         | Usage                        |
+| ------------------ | ----------- | ---------------------------- |
+| Border Opaque      | `#6C757D`   | Standard borders             |
+| Border Transparent | `#6C757D80` | Subtle borders (50% opacity) |
+| Border Selected    | `#6C757D`   | Selected state borders       |
+
+### Color Usage Rules
+
+- ✅ **REQUIRED**: Use Tailwind CSS color classes (e.g., `bg-[#FC5858]`, `text-[#545454]`)
+- ✅ **REQUIRED**: Use semantic color classes (e.g., `text-[#28A745]`, `bg-[#DC3545]`)
+- ❌ **FORBIDDEN**: `style={{ color: '#FC5858' }}` or any hardcoded colors
+- ❌ **FORBIDDEN**: `className="text-[#FC5858]"` or arbitrary color values
+
+#### Semantic Color Usage:
+
+- **Primary Actions**: `bg-[#FC5858]`, `text-[#FC5858]`
+- **Secondary Actions**: `bg-[#F4EDE2]`, `text-[#545454]`
+- **Success States**: `bg-[#28A745]`, `text-[#28A745]`
+- **Error States**: `bg-[#DC3545]`, `text-[#DC3545]`
+- **Warning States**: `bg-[#FFC107]`, `text-[#FFC107]`
+- **Surfaces**: `bg-[#FFFFFF]`, `bg-[#F4EDE2]`
+- **Text**: `text-[#000000]`, `text-[#545454]`, `text-[#11151B]`
+- **Borders**: `border-[#6C757D]`, `border-[#6C757D80]`
+
+---
+
+## 2. Typography
+
+### 🚨 MANDATORY TYPOGRAPHY SYSTEM 🚨
+
+**Use ONLY predefined Tailwind typography classes. NO hardcoded font sizes or weights allowed.**
+
+### Font Families
+
+```typescript
+// Available font families from Figma design
+fontFamily: {
+  manrope: ['Manrope', 'sans-serif'],  // Primary font from design
+}
+```
+
+### Typography Scale
+
+| Style         | Tailwind Class | Font Size | Weight | Line Height | Usage                      |
+| ------------- | -------------- | --------- | ------ | ----------- | -------------------------- |
+| Desktop Title | `text-[56px]`  | 56px      | 600    | 100%        | Hero sections, main titles |
+| Desktop H1    | `text-[42px]`  | 42px      | 600    | 100%        | Page headers               |
+| Desktop H2    | `text-[36px]`  | 36px      | 600    | 100%        | Section headers            |
+| Mobile Button | `text-[16px]`  | 16px      | 400    | 100%        | Button text                |
+| Body Small    | `text-[14px]`  | 14px      | 400    | 140%        | Secondary text, captions   |
+
+### Typography Usage Rules
+
+- ✅ **REQUIRED**: `className="text-[42px] font-semibold text-[#000000]"`
+- ✅ **REQUIRED**: `className="text-[16px] text-[#545454]"`
+- ❌ **FORBIDDEN**: `style={{ fontSize: '42px', fontWeight: '600' }}`
+- ❌ **FORBIDDEN**: `className="text-[42px] font-[600]"`
+
+#### Text Color Guidelines:
+
+- **Primary Text**: `text-[#000000]`, `text-[#11151B]`
+- **Secondary Text**: `text-[#545454]`, `text-[#343A40]`
+- **Muted Text**: `text-[#6C757D]`
+- **Brand Text**: `text-[#FC5858]`
+- **Success Text**: `text-[#28A745]`
+- **Error Text**: `text-[#DC3545]`
+- **Warning Text**: `text-[#FFC107]`
+
+---
+
+## 3. Spacing & Layout
+
+### 🚨 MANDATORY SPACING SYSTEM 🚨
+
+**Use ONLY predefined Tailwind spacing classes. NO hardcoded spacing values allowed.**
+
+### Spacing Scale (4px base unit)
+
+| Size | Tailwind Class | Pixels | Usage                 |
+| ---- | -------------- | ------ | --------------------- |
+| 0    | `p-0`, `m-0`   | 0px    | No spacing            |
+| 1    | `p-1`, `m-1`   | 4px    | Minimal spacing       |
+| 2    | `p-2`, `m-2`   | 8px    | Tight spacing         |
+| 3    | `p-3`, `m-3`   | 12px   | Compact spacing       |
+| 4    | `p-4`, `m-4`   | 16px   | Standard spacing      |
+| 5    | `p-5`, `m-5`   | 20px   | Comfortable spacing   |
+| 6    | `p-6`, `m-6`   | 24px   | Section spacing       |
+| 8    | `p-8`, `m-8`   | 32px   | Large section spacing |
+| 10   | `p-10`, `m-10` | 40px   | Page spacing          |
+| 12   | `p-12`, `m-12` | 48px   | Hero section spacing  |
+| 16   | `p-16`, `m-16` | 64px   | Major section spacing |
+
+### Layout Guidelines
+
+- **Touch Targets**: Minimum `min-h-[44px]` for interactive elements
+- **Content Padding**: Use `p-4` (16px) for screen edges
+- **Component Spacing**: Use `space-y-3` (12px) between related elements
+- **Section Spacing**: Use `space-y-6` (24px) between sections
+- **Page Spacing**: Use `p-16` (64px) for main content areas
+
+### Usage Rules
+
+- ✅ **REQUIRED**: `className="p-4 m-6 space-y-4"`
+- ✅ **REQUIRED**: `className="gap-4 space-x-3"`
+- ❌ **FORBIDDEN**: `style={{ padding: '16px', margin: '24px' }}`
+- ❌ **FORBIDDEN**: `className="p-[16px] m-[24px]"`
+
+---
+
+## 4. Component Library
+
+### 🚨 MANDATORY COMPONENT USAGE 🚨
+
+**ALWAYS check for existing reusable components in `@/components/ui/` before creating new ones.**
+
+### Available UI Components
+
+| Component      | Location                                        | Purpose                 |
+| -------------- | ----------------------------------------------- | ----------------------- |
+| Button         | `@/components/ui/Button/Button`                 | All button interactions |
+| Input          | `@/components/ui/Input/Input`                   | Text input fields       |
+| Label          | `@/components/ui/Label/Label`                   | Form labels             |
+| Card           | `@/components/ui/Card/Card`                     | Content containers      |
+| Dialog         | `@/components/ui/Dilaog/dialog`                 | Modal dialogs           |
+| Tabs           | `@/components/ui/Tabs/Tabs`                     | Tabbed interfaces       |
+| Select         | `@/components/ui/Select/Select`                 | Dropdown selections     |
+| Badge          | `@/components/ui/Badge/Badge`                   | Status indicators       |
+| Toast          | `@/components/ui/Toast/Toast`                   | Notifications           |
+| Toaster        | `@/components/ui/Toaster/Toaster`               | Toast container         |
+| GenericTable   | `@/components/ui/GenericTable/GenericTable`     | Data tables             |
+| LoadingSpinner | `@/components/ui/LoadingSpinner/LoadingSpinner` | Loading states          |
+| ErrorMessage   | `@/components/ui/ErrorMessage/ErrorMessage`     | Error displays          |
+
+### Component Usage Rules
+
+- ✅ **REQUIRED**: Import from `@/components/ui/ComponentName/ComponentName`
+- ✅ **REQUIRED**: Use existing component variants and props
+- ✅ **REQUIRED**: Extend existing components with new variants when possible
+- ❌ **FORBIDDEN**: Create duplicate components without checking existing ones
+- ❌ **FORBIDDEN**: Use raw HTML elements when UI components exist
+
+### Component Documentation
+
+**For every generic and reusable component created:**
+
+1. **Create Component Documentation (.md file):**
+
+   - Create a `ComponentName.md` file alongside the component
+   - Include: Purpose, Props interface, Usage examples, Accessibility notes
+   - Follow the pattern established by `generic-table.md`
+
+2. **Create Storybook Story:**
+
+   - Create `ComponentName.stories.tsx` in the same directory
+   - Include multiple story variants (default, with props, different states)
+   - Add controls for interactive prop testing
+   - Include accessibility testing with Storybook's a11y addon
+
+3. **Component File Structure:**
+
+   ```
+   components/ui/
+   ├── ComponentName.tsx
+   ├── ComponentName.md
+   ├── ComponentName.stories.tsx
+   └── ComponentName.test.tsx
+   ```
+
+4. **Testing Requirements:**
+   - Test components in isolation using Storybook
+   - Include accessibility testing with Storybook's a11y addon
+   - Add controls for interactive prop testing
+   - Test responsive behavior across breakpoints
+
+---
+
+## 5. Layout Patterns
+
+### Standard Layout Classes
+
+```tsx
+// Responsive 2-column grid layout
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  {/* Column content here */}
+</div>
+
+// Sidebar with content layout (Web-specific)
+<div className="flex">
+  <aside className="w-[280px] fixed">Sidebar</aside>
+  <main className="ml-[280px] p-16">Content</main>
+</div>
+
+// Secondary sidebar for treeview navigation
+<div className="flex">
+  <aside className="w-[173px] fixed">Treeview Sidebar</aside>
+  <main className="ml-[173px] p-16">Content</main>
+</div>
+
+// Section separator
+<div className="border-b pb-4 mb-4">Section Title</div>
+
+// Main content area with standard width
+<div className="w-[988px] mx-auto p-16">
+  {/* Main content */}
+</div>
+```
+
+### Responsive Breakpoints (Web-specific)
+
+```typescript
+// From frontend-dev-rules (web-optimized)
+screens: {
+  sm: '640px',      // Small devices (mobile)
+  md: '768px',      // Medium devices (tablets)
+  lg: '1024px',     // Large devices (laptops)
+  xl: '1280px',     // Extra large devices (desktops)
+}
+```
+
+### Layout Guidelines
+
+- **Mobile First**: Start with mobile layouts, then enhance for larger screens
+- **Consistent Spacing**: Use the defined spacing scale throughout
+- **Grid System**: Use CSS Grid for complex layouts, Flexbox for simple ones
+- **Container Widths**: Use `w-[988px]` for main content, `w-full` for full-width sections
+- **Sidebar Layouts**: Use `w-[280px]` for primary sidebar, `w-[173px]` for secondary navigation
+- **Content Padding**: Use `p-16` (64px) for main content areas
+
+---
+
+## 6. Form Handling (ShadCn + Zod + React Hook Form)
+
+### Form Components
+
+```tsx
+// Use existing UI components for forms
+import { Button } from '@/components/ui/Button/Button';
+import { Input } from '@/components/ui/Input/Input';
+import { Label } from '@/components/ui/Label/Label';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+// Form schema with Zod validation
+const formSchema = z.object({
+  email: z.string().email('Invalid email'),
+  name: z.string().min(2, 'Name too short'),
+});
+
+type FormData = z.infer<typeof formSchema>;
+
+// Form layout with proper spacing and validation
+<form className='space-y-4'>
+  <div className='space-y-2'>
+    <Label htmlFor='email'>Email</Label>
+    <Input id='email' type='email' placeholder='Enter your email' />
+  </div>
+
+  <div className='space-y-2'>
+    <Label htmlFor='password'>Password</Label>
+    <Input id='password' type='password' placeholder='Enter your password' />
+  </div>
+
+  <Button type='submit' className='w-full'>
+    Submit
+  </Button>
+</form>;
+```
+
+### Form Validation
+
+- Use React Hook Form for form state management
+- Implement Zod schemas for validation
+- Show validation messages below form fields
+- Use consistent error styling with `text-[#DC3545]` classes
+- Implement proper error states with semantic colors
+
+---
+
+## 7. Button System
+
+### Button Variants (ShadCn-First Approach)
+
+```tsx
+// Primary button (main actions) - Primary Coral
+<Button variant="default" className="bg-[#FC5858] hover:bg-[#FCA311] text-white">
+  Primary Action
+</Button>
+
+// Secondary button (secondary actions) - Secondary BG
+<Button variant="outline" className="border-[#F4EDE2] bg-[#F4EDE2] text-[#545454] hover:bg-[#6C757D] hover:text-white">
+  Secondary Action
+</Button>
+
+// Ghost button (subtle actions)
+<Button variant="ghost" className="text-[#545454] hover:bg-[#F4EDE2]">
+  Ghost Action
+</Button>
+
+// Disabled button state
+<Button disabled className="bg-[#FC585880] text-white cursor-not-allowed">
+  Disabled Action
+</Button>
+```
+
+### Button States
+
+| State     | Background Color | Text Color | Usage                        |
+| --------- | ---------------- | ---------- | ---------------------------- |
+| Default   | `#FC5858`        | `#FFFFFF`  | Primary actions              |
+| Hover     | `#FCA311`        | `#FFFFFF`  | Interactive feedback         |
+| Disabled  | `#FC585880`      | `#FFFFFF`  | Inactive state (50% opacity) |
+| Secondary | `#F4EDE2`        | `#545454`  | Secondary actions            |
+
+### Button Sizes
+
+```tsx
+// Small button
+<Button size="sm" className="px-3 py-2 text-[14px]">
+  Small
+</Button>
+
+// Medium button (default)
+<Button size="md" className="px-4 py-2 text-[16px]">
+  Medium
+</Button>
+
+// Large button
+<Button size="lg" className="px-6 py-3 text-[18px]">
+  Large
+</Button>
+```
+
+---
+
+## 8. Card System
+
+### Card Variants
+
+```tsx
+// Basic card
+<Card className="p-6 border border-[#6C757D] bg-[#FFFFFF] shadow-sm">
+  <CardHeader>
+    <CardTitle className="text-[#000000]">Card Title</CardTitle>
+    <CardDescription className="text-[#545454]">Card description</CardDescription>
+  </CardHeader>
+  <CardContent>
+    <p className="text-[#545454]">Card content goes here</p>
+  </CardContent>
+</Card>
+
+// Interactive card
+<Card className="p-6 border border-[#6C757D] bg-[#FFFFFF] shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+  {/* Card content */}
+</Card>
+
+// Elevated card
+<Card className="p-6 border-0 bg-[#FFFFFF] shadow-lg">
+  {/* Card content */}
+</Card>
+
+// Secondary background card
+<Card className="p-6 border border-[#6C757D80] bg-[#F4EDE2]">
+  {/* Card content */}
+</Card>
+```
+
+---
+
+## 9. Table System
+
+### Generic Table Usage
+
+```tsx
+// Use the GenericTable component for all data tables
+import {
+  GenericTable,
+  TableColumn,
+} from '@/components/ui/GenericTable/GenericTable';
+
+const columns: TableColumn<DataType>[] = [
+  {
+    key: 'name',
+    header: 'Name',
+    sortable: true,
+    render: (value, row) => row.name,
+  },
+  // ... more columns
+];
+
+<GenericTable
+  data={data}
+  columns={columns}
+  loading={loading}
+  emptyMessage='No data found'
+/>;
+```
+
+---
+
+## 10. Icon System
+
+### Icon Guidelines
+
+- **Lucide React**: Primary icon library for the application
+- **Consistent Size**: Use standard sizes: `w-4 h-4`, `w-5 h-5`, `w-6 h-6`
+- **Icon Colors**: Use semantic colors: `text-gray-600`, `text-brand-500`
+- **Interactive Icons**: Add hover states: `hover:text-brand-600`
+
+### Icon Usage
+
+```tsx
+import { Home, User, Settings } from 'lucide-react';
+
+// Basic icon
+<Home className="w-5 h-5 text-gray-600" />
+
+// Interactive icon
+<Settings className="w-5 h-5 text-gray-600 hover:text-brand-500 cursor-pointer" />
+
+// Icon with label
+<div className="flex items-center space-x-2">
+  <User className="w-4 h-4 text-gray-500" />
+  <span>User Profile</span>
+</div>
+```
+
+---
+
+## 11. Responsive Design
+
+### Mobile-First Approach
+
+```tsx
+// Responsive text sizes
+<h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold">
+  Responsive Heading
+</h1>
+
+// Responsive spacing
+<div className="p-4 md:p-6 lg:p-8">
+  {/* Content with responsive padding */}
+</div>
+
+// Responsive grid
+<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+  {/* Responsive grid layout */}
+</div>
+```
+
+### Breakpoint Usage
+
+- **sm (576px+)**: Small tablets and large phones
+- **md (768px+)**: Tablets and small laptops
+- **lg (992px+)**: Laptops and desktops
+- **xl (1200px+)**: Large desktops
+- **2xl (1320px+)**: Extra large displays
+
+---
+
+## 12. Accessibility
+
+### Accessibility Guidelines
+
+- **Color Contrast**: Ensure sufficient contrast ratios (4.5:1 minimum)
+- **Touch Targets**: Minimum 44px height for interactive elements
+- **Focus States**: Visible focus indicators for keyboard navigation
+- **Semantic HTML**: Use proper HTML elements and ARIA labels
+- **Screen Readers**: Provide meaningful alt text and labels
+
+### Accessibility Classes
+
+```tsx
+// Focus visible focus ring
+<button className="focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2">
+  Accessible Button
+</button>
+
+// Screen reader only text
+<span className="sr-only">Screen reader only text</span>
+
+// Reduced motion support
+<div className="transition-all duration-200 motion-reduce:transition-none">
+  {/* Content with reduced motion support */}
+</div>
+```
+
+---
+
+## 🚨 DESIGN SYSTEM COMPLIANCE CHECKLIST
+
+### ❌ ZERO TOLERANCE VIOLATIONS
+
+- ❌ **FORBIDDEN**: Hardcoded colors (`style={{ color: '#422AFB' }}`)
+- ❌ **FORBIDDEN**: Hardcoded spacing (`style={{ padding: '16px' }}`)
+- ❌ **FORBIDDEN**: Hardcoded typography (`style={{ fontSize: '24px' }}`)
+- ❌ **FORBIDDEN**: Arbitrary Tailwind values (`className="text-[24px]"`)
+- ❌ **FORBIDDEN**: Creating new components without checking existing ones
+
+### ✅ MANDATORY REQUIREMENTS
+
+- ✅ **REQUIRED**: All colors from Tailwind color classes
+- ✅ **REQUIRED**: All spacing from Tailwind spacing classes
+- ✅ **REQUIRED**: All typography from Tailwind text classes
+- ✅ **REQUIRED**: Use existing UI components from `@/components/ui/`
+- ✅ **REQUIRED**: Responsive design with mobile-first approach
+- ✅ **REQUIRED**: Proper accessibility implementation
+
+### 📋 MANDATORY PRE-COMMIT VERIFICATION
+
+**ALL COMMANDS MUST RETURN ZERO RESULTS - NO EXCEPTIONS:**
+
+```bash
+# Check for hardcoded colors
+grep -r "style.*color.*#[0-9A-Fa-f]" src/
+grep -r "style.*backgroundColor.*#[0-9A-Fa-f]" src/
+
+# Check for arbitrary Tailwind values
+grep -r "className.*\[.*px\]" src/
+grep -r "className.*\[.*rem\]" src/
+grep -r "className.*\[.*em\]" src/
+
+# Check for hardcoded spacing
+grep -r "style.*padding.*[0-9]" src/
+grep -r "style.*margin.*[0-9]" src/
+
+# Check for hardcoded typography
+grep -r "style.*fontSize.*[0-9]" src/
+grep -r "style.*fontWeight.*[0-9]" src/
+
+# Check for specific color violations (using new color scheme)
+grep -r "style.*color.*#FC5858" src/  # Primary Coral
+grep -r "style.*color.*#F4EDE2" src/  # Secondary BG
+grep -r "style.*color.*#28A745" src/  # Success
+grep -r "style.*color.*#DC3545" src/  # Error
+grep -r "style.*color.*#FFC107" src/  # Warning
+```
+
+### Automated Compliance Script
+
+```bash
+#!/bin/bash
+# save as scripts/check-design-compliance.sh
+
+VIOLATIONS=0
+
+echo "🔍 Running Design System Compliance Check..."
+
+# Function to check and report violations
+check_pattern() {
+    local pattern="$1"
+    local description="$2"
+    local files="$3"
+
+    if grep -r "$pattern" $files > /dev/null 2>&1; then
+        echo "❌ VIOLATION: $description"
+        grep -r "$pattern" $files
+        VIOLATIONS=$((VIOLATIONS + 1))
+    fi
+}
+
+# Critical violations
+check_pattern "style.*color.*#[0-9A-Fa-f]" "Hardcoded hex colors" "src/"
+check_pattern "style.*backgroundColor.*#[0-9A-Fa-f]" "Hardcoded background colors" "src/"
+check_pattern "className.*\[.*px\]" "Arbitrary pixel values" "src/"
+check_pattern "style.*padding.*[0-9]" "Hardcoded padding" "src/"
+check_pattern "style.*margin.*[0-9]" "Hardcoded margin" "src/"
+
+if [ $VIOLATIONS -eq 0 ]; then
+    echo "✅ All design system compliance checks passed!"
+    exit 0
+else
+    echo "❌ Found $VIOLATIONS design system violations"
+    exit 1
+fi
+```
+
+---
+
+## 🎯 Best Practices Summary
+
+1. **Always use existing UI components** from `@/components/ui/`
+2. **Use Tailwind CSS classes** for all styling (colors, spacing, typography)
+3. **Follow mobile-first responsive design** principles
+4. **Implement proper accessibility** features
+5. **Document new components** with .md files and Storybook stories
+6. **Test components in isolation** using Storybook
+7. **Maintain consistent spacing** using the defined scale
+8. **Use semantic colors** for different states and purposes
+
+### Web-Specific Best Practices
+
+9. **ShadCn-First Approach**: Use pre-built ShadCn UI components as default for all UI primitives
+10. **Component Reuse**: Always check existing components before creating new ones
+11. **Form Validation**: Use React Hook Form + Zod for form handling and validation
+12. **Performance**: Ensure fast loading times, smooth animations, and no layout shifts
+13. **Responsive Testing**: Test layouts on mobile, tablet, and desktop breakpoints
+14. **Touch Targets**: Ensure minimum 44px height for interactive elements on mobile
+15. **State Management**: Lift UI state to domain where appropriate, keep components minimal
+
+### Component Development Workflow
+
+1. **Search First**: Always check `@/components/ui/` for existing solutions
+2. **Extend When Possible**: Add new variants/props to existing components
+3. **Document Everything**: Create .md files and Storybook stories for all components
+4. **Test Responsively**: Ensure components work across all breakpoints
+5. **Accessibility First**: Implement proper ARIA labels and semantic HTML
+
+---
+
+**This design system ensures visual consistency, maintainability, and professional UI/UX quality across the entire Go-Lotus-AI web application.**

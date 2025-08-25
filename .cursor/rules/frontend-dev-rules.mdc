@@ -1,0 +1,317 @@
+---
+alwaysApply: true
+---
+
+# 🎯 Cursor Frontend Dev Rules (Next.js + ShadCn + RadixUI)
+
+This unified guide is optimized for frontend development using **Next.js**, **TailwindCSS**, **ShadCn**, and **Radix UI**. It consolidates and modernizes layout, UI patterns, and form rules.
+
+---
+
+### Standardize with ShadCn-first approach
+
+Use pre-built ShadCn UI components (@/components/ui) as the default for all UI primitives.
+Override styling only via Tailwind or variant configuration — avoid full rewrites.
+
+### Check Existing Components First
+
+**ALWAYS check for existing reusable components in `@/components/ui/` before creating new ones.**
+
+1. **Search the UI folder first** - Look for components that might already solve your need
+2. **Use existing components** - Modify existing components with props/variants rather than creating duplicates
+3. **Extend when possible** - Add new variants or props to existing components instead of creating new ones
+4. **Document additions** - When extending existing components, update their documentation and stories
+
+### Extract and Reuse Components
+
+If any UI layout or component pattern (e.g., section headers, cards, form field wrappers) is repeated more than once, extract it into a reusable component under your components/ui/ or
+
+### Component Documentation and Storybook
+
+**For every generic and reusable component created:**
+
+1. **Create Component Documentation (.md file):**
+
+   - Create a `ComponentName.md` file alongside the component
+   - Include: Purpose, Props interface, Usage examples, Accessibility notes
+   - Follow the pattern established by `generic-table.md`
+
+2. **Create Storybook Story:**
+   - Create `ComponentName.stories.tsx` in the same directory
+   - Include multiple story variants (default, with props, different states)
+   - Add controls for interactive prop testing
+   - Include accessibility testing with Storybook's a11y addon
+
+**Example Structure:**
+
+```
+components/ui/
+├── MyComponent.tsx
+├── MyComponent.md
+├── MyComponent.stories.tsx
+└── MyComponent.test.tsx
+```
+
+### Use Radix UI where ShadCn doesn't offer coverage
+
+For components like tooltips, popovers, or advanced modals not in ShadCn, use Radix UI directly.
+Wrap in your own ui/ layer for styling consistency.
+
+### Prefer JSX + components over raw Tailwind HTML
+
+JSX with encapsulated components should replace long HTML-Tailwind snippets.
+Helps with readability, theming, testing, and reusability.
+
+## 📐 Layout Patterns
+
+tsx
+// Responsive 2-column grid layout
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  {/* Column content here */}
+</div>
+
+// Sidebar with content layout
+
+<div className="flex">
+  <aside className="w-64 fixed">Sidebar</aside>
+  <main className="ml-64 p-10">Content</main>
+</div>
+
+// Section separator
+
+<div className="border-b pb-2 mb-4">Section Title</div>
+
+---
+
+## 📋 Form Handling (ShadCn + Zod + React Hook Form)
+
+tsx
+"use client";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+const formSchema = z.object({
+email: z.string().email("Invalid email"),
+name: z.string().min(2, "Name too short"),
+});
+
+type FormData = z.infer<typeof formSchema>;
+
+export function UserForm() {
+const {
+register,
+handleSubmit,
+formState: { errors },
+} = useForm<FormData>({
+resolver: zodResolver(formSchema),
+});
+
+return (
+
+<form onSubmit={handleSubmit(console.log)} className="space-y-4">
+<Label htmlFor="name">Name</Label>
+<Input id="name" {...register("name")} />
+{errors.name && <p>{errors.name.message}</p>}
+
+      <Label htmlFor="email">Email</Label>
+      <Input id="email" {...register("email")} />
+      {errors.email && <p>{errors.email.message}</p>}
+
+      <Button type="submit">Submit</Button>
+    </form>
+
+);
+}
+
+---
+
+## 🔘 Buttons (ShadCn Components)
+
+Prefer ShadCn's `<Button>` component with the following variants:
+
+tsx
+<Button variant="default">Primary</Button>
+<Button variant="outline">Outline</Button>
+<Button variant="ghost">Ghost</Button>
+<Button size="sm">Small</Button>
+
+> Customize variants via `tailwind.config.js` if needed.
+
+---
+
+## 🔤 Inputs
+
+Use `Input`, `Textarea`, and optionally `MaskedInput` from community libraries for phone fields.
+
+tsx
+<Label htmlFor="bio">Bio</Label>
+<Textarea id="bio" placeholder="Tell us something..." />
+
+<Label htmlFor="phone">Phone</Label>
+<MaskedInput mask="(999) 999-9999" id="phone" />
+
+---
+
+## 🧩 Reusable UI Components
+
+### ✅ Profile Card
+
+tsx
+<Card className="p-6 border shadow-sm rounded-xl">
+<CardHeader>
+<CardTitle>User Name</CardTitle>
+<CardDescription>Basic Info</CardDescription>
+</CardHeader>
+<CardContent>
+
+<div>Email: user@example.com</div>
+<div>Contact: +123456789</div>
+</CardContent>
+</Card>
+
+### ✅ Navigation Sidebar
+
+tsx
+
+<aside className="w-64 fixed top-0 left-0 h-full border-r bg-white shadow-md">
+  <nav className="p-4 space-y-2">
+    <Link href="/dashboard" className="block py-2">
+      Dashboard
+    </Link>
+    <Link href="/settings" className="block py-2">
+      Settings
+    </Link>
+  </nav>
+</aside>
+
+---
+
+## ⚙️ General UI Rules
+
+- Use spacing via Tailwind utilities (`p-4`, `gap-6`, `mt-8`)
+- Use `border`, `rounded`, `shadow` for surfaces
+- Prefer `@/components/ui/*` over raw HTML elements
+- Extract repeating elements into components inside `components/ui/`
+
+---
+
+## 🎨 Styling & Design Tokens
+
+ts
+use tailwindcss;
+use font "Manrope";
+// Typography System
+// Desktop Styles
+text.title: text-[56px] font-semibold leading-[100%] font-manrope; // Desktop Title
+text.h1: text-[42px] font-semibold leading-[100%] font-manrope; // Desktop H1
+text.h2: text-[36px] font-semibold leading-[100%] font-manrope; // Desktop H2
+text.h3: text-[24px] font-semibold leading-[100%] font-manrope; // Desktop H3
+text.body: text-[16px] font-normal leading-[100%] font-manrope; // Desktop Body
+text.button: text-[18px] font-semibold leading-[100%] font-manrope; // Desktop Button
+text.link: text-[16px] font-semibold leading-[100%] font-manrope; // Desktop Link
+text.bodySmall: text-[14px] font-normal leading-[140%] font-manrope; // Desktop Body Small
+
+// Mobile Styles
+text.mobile.title: text-[48px] font-semibold leading-[100%] font-manrope; // Mobile Title
+text.mobile.h1: text-[36px] font-semibold leading-[100%] font-manrope; // Mobile H1
+text.mobile.h2: text-[24px] font-semibold leading-[100%] font-manrope; // Mobile H2
+text.mobile.h3: text-[18px] font-semibold leading-[100%] font-manrope; // Mobile H3
+text.mobile.body: text-[14px] font-normal leading-[100%] font-manrope; // Mobile Body
+text.mobile.button: text-[16px] font-semibold leading-[100%] font-manrope; // Mobile Button
+text.mobile.link: text-[14px] font-semibold leading-[100%] font-manrope; // Mobile Link
+text.mobile.bodySmall: text-[12px] font-normal leading-[100%] font-manrope; // Mobile Body Small
+
+use spacing scale [4, 8, 16, 24, 32, 40];
+use color palette:
+
+- primary: #FC5858,
+- secondary: #F4EDE2,
+- border: #6C757D80;
+- text-primary: #11151B,
+- text-secondary: #565E64,
+- background: #FFFFFF,
+- accent: #F9F5FF;
+- neutral-800: #191D23,
+- neutral-400: #A0ABBB;
+- main-bulma: #1E1E23;
+- black-54: rgba(0,0,0,0.54);
+
+---
+
+## 🧱 Layout & Structure
+
+ts
+use sidebar layout with fixed width w-[280px];
+use secondary sidebar with width w-[173px] for treeview navigation;
+content padding: p-16;
+use grid: grid-cols-1 md:grid-cols-2 gap-8;
+section separation: border-b pb-4 mb-4;
+use main content area with width w-[988px];
+
+# Product Requirement Document: Base Layout Component
+
+## Layout
+
+Create a responsive base layout component (`layout.tsx`) that serves as the foundation for all pages in the application, featuring a collapsible sidebar navigation and main content area that matches the Figma design exactly.
+
+### File Structure
+
+src/
+├── components/
+│ ├── layout/
+│ │ ├── Sidebar.tsx
+│ │ ├── MainContent.tsx
+│ │ ├── Header.tsx
+│ │ └── index.ts
+│ └── ui/
+│ ├── Button.tsx
+│ ├── NavigationItem.tsx
+│ └── UserProfile.tsx
+├── styles/
+│ ├── globals.css
+│ └── variables.css
+└── app/
+└── layout.tsx
+
+Responsive Behavior
+
+### Breakpoints
+
+css
+/_ Mobile First Approach _/
+--breakpoint-sm: 640px;
+--breakpoint-md: 768px;
+--breakpoint-lg: 1024px;
+--breakpoint-xl: 1280px;
+
+### Performance
+
+- Fast loading times
+- Smooth animations
+- No layout shifts
+
+---
+
+## ✅ Best Practices
+
+- **ALWAYS check existing UI components first** - Search `@/components/ui/` before creating new components
+- **Reuse and extend** - Modify existing components with props/variants rather than creating duplicates
+- Use `react-hook-form` for form validation
+- Avoid redundant modals; use dialog for critical actions
+- Consistent 2-column layout where possible
+- Minimal UI state inside components (lift to domain where appropriate)
+- **Always ensure responsive design** - test layouts on mobile, tablet, and desktop breakpoints
+- Use mobile-first approach with responsive utilities (sm:, md:, lg:, xl:)
+- Implement proper responsive typography using the defined text styles
+- Ensure touch targets are at least 44px on mobile devices
+- Use responsive grid layouts that adapt to screen sizes
+- **Document all reusable components** with .md files and Storybook stories
+- **Test components in isolation** using Storybook for better development experience
+
+---
