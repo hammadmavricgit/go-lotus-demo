@@ -9,8 +9,7 @@
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "vercel-build": "next build",
-    "postbuild": "next-sitemap"
+    "vercel-build": "next build"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.28.0",

@@ -4,12 +4,6 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true, // This disables ESLint during build
   },
-  // Ensure proper output for Vercel
-  output: 'standalone',
-  // Enable experimental features for better performance
-  experimental: {
-    optimizePackageImports: ['lucide-react'],
-  },
   // Ensure proper image optimization
   images: {
     unoptimized: false,
